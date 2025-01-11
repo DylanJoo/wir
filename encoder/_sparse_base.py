@@ -25,13 +25,18 @@ class SparseEncoder(BertForMaskedLM):
         output_hidden_states=None,
     ):
         if sub_input_ids is not None:
-            encoder_hidden_states = self.bert.embeddings(
+            encoder_hidden_states = self.bert(
                 input_ids=sub_input_ids,
+                attention_mask=sub_attention_mask,
                 token_type_ids=sub_token_type_ids,
-                position_ids=None,
-                inputs_embeds=None,
-                past_key_values_length=0
-            )
+                position_ids=position_ids,
+                head_mask=head_mask,
+                inputs_embeds=inputs_embeds,
+                encoder_hidden_states=None,
+                encoder_attention_mask=None,
+                output_attentions=output_attentions,
+                output_hidden_states=True,
+            )[0]
             encoder_attention_mask = sub_attention_mask
 
         outputs = self.bert(
